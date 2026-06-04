@@ -109,6 +109,15 @@ class Folder(FileSystemObject):
         super().__init__(name, path, 0)
         self.__objects = []
 
+    def calculate_total_size(self) -> int:
+        total = 0
+        for obj in self.__objects:
+            if isinstance(obj, Folder):
+                total += obj.calculate_total_size()
+            else:
+                total += obj.size
+        return total
+
     @property
     def size(self):
         return sum(obj.size for obj in self.__objects)
